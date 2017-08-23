@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     @IBOutlet private weak var display: UILabel!
     
     private var userIsInTheMiddleOfTyping = false
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
     @IBAction private func touchDigit(_ sender: UIButton) {
         // Take the sender (UIButton) and take its title
         let digit = sender.currentTitle!
+        
         if userIsInTheMiddleOfTyping {
             let textCurrentlyInDisplay = display.text!
             display.text = textCurrentlyInDisplay + digit
@@ -28,15 +30,17 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTyping = true
     }
     
-    // Created computed property --> helps with type casting
+    // Create computed property --> helps with type casting
+    // displayValue  is a double
     private var displayValue: Double {
+        // gets the display text and casts it to a Double
         get {
             return Double(display.text!)!
         }
+        // Sets the display as a String --> newValue is a keyword, is a Double that someone can set in the code (e.g. via an operation)
         set {
             display.text = String(newValue)
         }
-        
     }
     
     // Create variable of type CalculatorModel (OBS!)
@@ -51,7 +55,10 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = sender.currentTitle {
             brain.performOperation(symbol: mathematicalSymbol)
         }
+        // set the display value equal to "result" / accumulator
         displayValue = brain.result
+        
     }
+  
 }
 

@@ -15,9 +15,9 @@ import Foundation
 class CalculatorModel {
     
     private var accumulator = 0.0
-    private var floatTracker = false
-    private var appendDot = false
     
+    // Track whether there is a float in display
+    private var floatTracker = false
     
     func setOperand(operand: Double) {
         accumulator = operand
@@ -39,7 +39,7 @@ class CalculatorModel {
         "+": Operation.BinaryOperation({$0 + $1}),
         "-": Operation.BinaryOperation({$0 - $1}),
         "=": Operation.Equals,
-        ".": Operation.Float
+        "C": Operation.Clear
     ]
     
     // Double inside (   )  is an "associated" value with the Enum... like as for Optionals
@@ -49,7 +49,7 @@ class CalculatorModel {
         case UnaryOperation((Double) -> Double)
         case BinaryOperation((Double, Double) -> Double)
         case Equals
-        case Float
+        case Clear
     }
     
     func performOperation(symbol: String) {
@@ -64,22 +64,14 @@ class CalculatorModel {
                 pending = PendingBinaryOperationInfo(binaryFunction: associatedFunction, firstOperand: accumulator)
             case .Equals:
                 executePendingBinaryOperation()
-            case .Float:
-               executeFloatOperation()
+            
             }
         }
     }
     
-    private func executeFloatOperation() {
-        if accumulator == floor(accumulator) && !floatTracker {
-            appendDot,  = true
-            floatTracker = true
-        } else {
-            accumulator = 0
-            appendDot, floatTracker = true
-            Boya Tester
-        }
-    }
+
+    
+    
     
     private func executePendingBinaryOperation() {
         if pending != nil {
@@ -88,8 +80,12 @@ class CalculatorModel {
         }
     }
     
+    
+    
     // Create var of type Optional struct
     private var pending: PendingBinaryOperationInfo?
+    
+    
     
     // Notice that a data type is Capitalized!
     private struct PendingBinaryOperationInfo {
@@ -97,6 +93,8 @@ class CalculatorModel {
         var binaryFunction: (Double, Double) -> Double
         var firstOperand: Double
     }
+    
+    
     
     // a read-only property
     var result: Double {
